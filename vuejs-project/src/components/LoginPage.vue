@@ -56,13 +56,13 @@
                 type="password"
                 required
             ></v-text-field>
-            <v-text-field
+            <!-- <v-text-field
                 ref="passwordCheck"
                 v-model="passwordCheck"
                 label="Password"
                 type="password"
                 required
-            ></v-text-field>
+            ></v-text-field> -->
         </v-card-text>
 
         <v-divider class="mx-4"></v-divider>
@@ -81,7 +81,7 @@
         <v-btn
             color="orange lighten-2"
             text
-            @click="changeTemplate"
+            @click="isLoggin = !isLoggin;"
         >
             {{isLoggin == true ? register : signIn}}
         </v-btn>
@@ -90,7 +90,7 @@
   </v-card>
 </template>
 <script>
-import Enumerable from 'linq'
+//import Enumerable from 'linq'
 const axios = require('axios').default;
 const dbUrl = "http://localhost:3000/"
   export default {
@@ -108,21 +108,93 @@ const dbUrl = "http://localhost:3000/"
 
     methods: {
       islemYap () {
+
+        var inputEmail = this.email;
+        var inputPassword = this.password;
+
         if (this.isLoggin) {
-            var inputEmail = this.email;
-            var inputPassword = this.password;
+            
             this.loading = true;
-            axios.get(dbUrl+'user')
-            .then(function (response) {
-                let result = Enumerable.from(response.data).where(x=>x.email == inputEmail).toArray();
-                if (result.length >= 1) {
-                    if (result[0].email == inputEmail && result[0].password == inputPassword) {
-                    console.log("Giriş başarılı");
-                    }else if (result[0].email == inputEmail) {
-                        console.log("Şifre yanlış")
+
+            axios.get(dbUrl+'user?email='+inputEmail+'&password='+inputPassword)
+                .then(function (response) {
+                    
+                    if (response.data.length >= 1) {
+                    console.log("Giriş başarılı")
+                    }else{
+                    alert("Email veya password yanlış");
                     }
-                }else{
-                    console.log("Kullanıcı bulunamadı")
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+                .then(function () {
+                    // always executed
+                });
+            
+            // axios.get(dbUrl+'user')
+            // .then(function (response) {
+            //     let result = Enumerable.from(response.data).where(x=>x.email == inputEmail).toArray();
+            //     if (result.length >= 1) {
+            //         if (result[0].email == inputEmail && result[0].password == inputPassword) {
+            //         console.log("Giriş başarılı");
+            //         }else if (result[0].email == inputEmail) {
+            //             console.log("Şifre yanlış")
+            //         }
+            //     }else{
+            //         console.log("Kullanıcı bulunamadı")
+            //     }
+                
+            // })
+            // .catch(function (error) {
+            //     // handle error
+            //     console.log(error);
+            // })
+            // .then(function () {
+            //     // always executed
+            // });
+        }else{
+            var inputName = this.name;
+            var inputSurname = this.surname;
+            let result = this.dbControl(inputEmail);
+            if (result) {
+                axios.post(dbUrl+'user',{
+                    firstname:inputName,
+                    lastname:inputSurname,
+                    email:inputEmail,
+                    password:inputPassword
+                })
+                .then(function (response) {
+                    // handle success
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+                .then(function () {
+                    // always executed
+                });
+            }else{
+                console.log("hatalı");
+            }
+            
+        }    
+        
+        setTimeout(() => (this.loading = false), 2000)
+      },
+
+      dbControl(inputEmail){
+          //asenkron yapı kurabilirim!!
+          let sonuc = true;
+          console.log("girdi")
+          axios.get(dbUrl+'user?email='+inputEmail)
+            .then(function (response) {
+                if (response.data.length>=1) {
+                    sonuc = false;
+                    console.log("Test ediyprum" + sonuc)
+                    return sonuc;
                 }
                 
             })
@@ -133,28 +205,12 @@ const dbUrl = "http://localhost:3000/"
             .then(function () {
                 // always executed
             });
-        }else{
-            axios.get(dbUrl+'guests')
-            .then(function (response) {
-                // handle success
-                console.log(response);
-            })
-            .catch(function (error) {
-                // handle error
-                console.log(error);
-            })
-            .then(function () {
-                // always executed
-            });
-        }
-        
-        
 
-        setTimeout(() => (this.loading = false), 2000)
-      },
-      changeTemplate(){
-          this.isLoggin = !this.isLoggin;
+            console.log(sonuc+"test");
+            
+        return sonuc;
       }
+
     },
   }
 </script>

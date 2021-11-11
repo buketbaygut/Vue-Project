@@ -15,18 +15,18 @@
       "password": "12"
     },
     {
-      "id": 3,
-      "firstName": "a",
-      "lastName": "a",
+      "firstname": "ortak",
+      "lastname": "ortak",
       "email": "ortak",
-      "password": "12"
+      "password": "12",
+      "id": 3
     },
     {
-      "id": 4,
-      "firstName": "a",
-      "lastName": "a",
-      "email": "admin",
-      "password": "12"
+      "firstname": "",
+      "lastname": "",
+      "email": "buket",
+      "password": "Password",
+      "id": 4
     }
   ],
   "guests": [
