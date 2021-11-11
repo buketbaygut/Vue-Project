@@ -95,9 +95,9 @@ const axios = require('axios').default;
 const dbUrl = "http://localhost:3000/"
   export default {
     data: () => ({   
-        name:"",  
-        surname:"",   
-        email:"",
+        name:'',  
+        surname:'',  
+        email:'',
         password: 'Password',
         passwordCheck : 'Password',
         signIn:"Login",
@@ -109,14 +109,22 @@ const dbUrl = "http://localhost:3000/"
     methods: {
       islemYap () {
         if (this.isLoggin) {
-            // let result = Enumerable.range(1, 10).where(i => i % 3 == 0).select(i => i * 10)
-            // console.log(result.toArray()) // [ 30, 60, 90 ]
-            
-            this.loading = true
+            var inputEmail = this.email;
+            var inputPassword = this.password;
+            this.loading = true;
             axios.get(dbUrl+'user')
             .then(function (response) {
-                Enumerable.from(response.data).forEach(x=>console.log(x))
-                // handle success
+                let result = Enumerable.from(response.data).where(x=>x.email == inputEmail).toArray();
+                if (result.length >= 1) {
+                    if (result[0].email == inputEmail && result[0].password == inputPassword) {
+                    console.log("Giriş başarılı");
+                    }else if (result[0].email == inputEmail) {
+                        console.log("Şifre yanlış")
+                    }
+                }else{
+                    console.log("Kullanıcı bulunamadı")
+                }
+                
             })
             .catch(function (error) {
                 // handle error
