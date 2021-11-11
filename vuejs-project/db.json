@@ -1,9 +1,88 @@
 {
-    "posts": [
-      { "id": 1, "title": "json-server", "author": "typicode" }
-    ],
-    "comments": [
-      { "id": 1, "body": "some comment", "postId": 1 }
-    ],
-    "profile": { "name": "typicode" }
-  }
+  "user": [
+    {
+      "id": 1,
+      "firstname": "",
+      "lastname": "",
+      "email": "buket",
+      "password": "12"
+    },
+    {
+      "id": 2,
+      "firstname": "",
+      "lastname": "",
+      "email": "umut",
+      "password": "12"
+    },
+    {
+      "id": 3,
+      "firstName": "a",
+      "lastName": "a",
+      "email": "ortak",
+      "password": "12"
+    },
+    {
+      "id": 4,
+      "firstName": "a",
+      "lastName": "a",
+      "email": "admin",
+      "password": "12"
+    }
+  ],
+  "guests": [
+    {
+      "id": 1,
+      "firstName": "hamide",
+      "lastName": "ulu",
+      "userId": 1
+    },
+    {
+      "id": 2,
+      "firstName": "hatice",
+      "lastName": "ulu",
+      "userId": 1
+    },
+    {
+      "id": 3,
+      "firstName": "şükran",
+      "lastName": "bayğut",
+      "userId": 2
+    },
+    {
+      "id": 4,
+      "firstName": "talha",
+      "lastName": "ardıç",
+      "userId": 3
+    },
+    {
+      "firstName": "narin",
+      "lastName": "bayğut",
+      "userId": 2,
+      "id": 5
+    },
+    {
+      "firstName": "Buket",
+      "lastName": "ULU",
+      "userId": "1",
+      "id": 6
+    },
+    {
+      "firstName": "a",
+      "lastName": "a",
+      "userId": "1",
+      "id": 7
+    },
+    {
+      "firstName": "b",
+      "lastName": "b",
+      "userId": "1",
+      "id": 8
+    },
+    {
+      "firstName": "asd",
+      "lastName": "asd",
+      "userId": "1",
+      "id": 9
+    }
+  ]
+}

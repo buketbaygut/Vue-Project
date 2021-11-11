@@ -90,8 +90,13 @@
   </v-card>
 </template>
 <script>
+import Enumerable from 'linq'
+const axios = require('axios').default;
+const dbUrl = "http://localhost:3000/"
   export default {
-    data: () => ({        
+    data: () => ({   
+        name:"",  
+        surname:"",   
         email:"",
         password: 'Password',
         passwordCheck : 'Password',
@@ -103,7 +108,39 @@
 
     methods: {
       islemYap () {
-        this.loading = true
+        if (this.isLoggin) {
+            // let result = Enumerable.range(1, 10).where(i => i % 3 == 0).select(i => i * 10)
+            // console.log(result.toArray()) // [ 30, 60, 90 ]
+            
+            this.loading = true
+            axios.get(dbUrl+'user')
+            .then(function (response) {
+                Enumerable.from(response.data).forEach(x=>console.log(x))
+                // handle success
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+            .then(function () {
+                // always executed
+            });
+        }else{
+            axios.get(dbUrl+'guests')
+            .then(function (response) {
+                // handle success
+                console.log(response);
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+            .then(function () {
+                // always executed
+            });
+        }
+        
+        
 
         setTimeout(() => (this.loading = false), 2000)
       },
