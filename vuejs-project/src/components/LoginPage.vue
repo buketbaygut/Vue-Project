@@ -186,7 +186,7 @@ const dbUrl = "http://localhost:3000/"
       },
 
       dbControl(inputEmail){
-          //asenkron yapı kurabilirim!!
+          //senkron yapı kurabilirim!!
           let sonuc = true;
           console.log("girdi")
           axios.get(dbUrl+'user?email='+inputEmail)

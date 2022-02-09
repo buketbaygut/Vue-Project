@@ -38,20 +38,23 @@
     </v-app-bar> -->
 
     <v-main>
-      <LoginPage/>
+      <!-- <LoginPage/> -->
+      <User/>
     </v-main>
   </v-app>
 </template>
 
 <script>
 //import HelloWorld from './components/HelloWorld';
-import LoginPage from './components/LoginPage'
+//import LoginPage from './components/LoginPage'
+import User from './components/User'
 
 export default {
   name: 'App',
 
   components: {
-    LoginPage,
+    User,
+    //LoginPage,
     //HelloWorld,
   },
 
