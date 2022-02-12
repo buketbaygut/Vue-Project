@@ -43,12 +43,12 @@
       </thead>
       <tbody>
         <tr
-          v-for="item in guest"
-          :key="item.name"
+          v-for="item in guestList"
+          :key="item.id"
         >
-          <td>{{ item.name }}</td>
+          <td>{{ item.firstName }}</td>
           <td>{{ item.city }}</td>
-          <td>{{ item.relation }}</td>
+          <td>{{ item.userId }}</td>
           <td>{{ item.fromWho }}</td>
         </tr>
       </tbody>
@@ -147,6 +147,12 @@
           ></v-autocomplete>
         </v-col>
       </v-row>
+      <v-btn
+            color="deep-purple lighten-2"
+            text
+            @click="setGuestList"
+        >
+        </v-btn>
 
 
             </v-container>
@@ -155,11 +161,13 @@
       </v-tab-item>
     </v-tabs>
   </v-card>
+  
 </template>
 
 <script>
-// const axios = require('axios').default;
-// const dbUrl = "http://localhost:3000/"
+const axios = require('axios').default;
+//const dbUrl = "http://localhost:3000/"
+
 import cityJson from '../json/city_list.json'
   export default {
     data: () => ({   
@@ -167,15 +175,40 @@ import cityJson from '../json/city_list.json'
       city:cityJson,
       fromWho : ['Buket','Umut','Both'],
       relation : ['Family','Friends','Relative'],
-      guest: [
-        {
-          name: 'Seda',
-          city: 'İstanbul',
-          fromWho: 'Both',
-          relation: 'Friends'
-        }
+      guestList: [
+        // {
+        //   name: 'Seda',
+        //   city: 'İstanbul',
+        //   fromWho: 'Both',
+        //   relation: 'Friends'
+        // }
       ],
     }), 
+
+    methods: ({
+      setGuestList(){
+        var self=this
+        axios.get("http://localhost:3000/guests")
+        .then(function (response) {
+                console.log(response.data);
+              for (var i=0; i<response.data.length; i++) {
+                
+                  
+                  self.guestList.push(response.data[i])
+              
+              
+              }
+        })                
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+            .then(function () {
+                // always executed
+            });
+
+      }
+    })
 
     }
 </script>

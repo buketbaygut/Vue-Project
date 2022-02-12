@@ -34,55 +34,25 @@
       "id": 1,
       "firstName": "hamide",
       "lastName": "ulu",
-      "userId": 1
-    },
-    {
-      "id": 2,
-      "firstName": "hatice",
-      "lastName": "ulu",
+      "fromWho" : "Buket",
+      "city" : "Ankara",
       "userId": 1
     },
     {
       "id": 3,
       "firstName": "şükran",
       "lastName": "bayğut",
+      "fromWho" : "Umut",
+      "city" : "Diyarbakır",
       "userId": 2
     },
     {
       "id": 4,
       "firstName": "talha",
       "lastName": "ardıç",
+      "fromWho" : "Both",
+      "city" : "İstanbul",
       "userId": 3
-    },
-    {
-      "firstName": "narin",
-      "lastName": "bayğut",
-      "userId": 2,
-      "id": 5
-    },
-    {
-      "firstName": "Buket",
-      "lastName": "ULU",
-      "userId": "1",
-      "id": 6
-    },
-    {
-      "firstName": "a",
-      "lastName": "a",
-      "userId": "1",
-      "id": 7
-    },
-    {
-      "firstName": "b",
-      "lastName": "b",
-      "userId": "1",
-      "id": 8
-    },
-    {
-      "firstName": "asd",
-      "lastName": "asd",
-      "userId": "1",
-      "id": 9
     }
   ]
 }
