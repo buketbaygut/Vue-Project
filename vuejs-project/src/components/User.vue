@@ -141,12 +141,11 @@
           ></v-autocomplete>
         </v-col>
       </v-row>
-      <v-btn
-            color="deep-purple lighten-2"
-            text
-            @click="setGuestList"
-        >
-        </v-btn>
+      <div class="text-center">
+        <v-btn
+          elevation="2"
+        >ADD</v-btn>
+      </div>
 
 
             </v-container>
@@ -180,9 +179,28 @@ import cityJson from '../json/city_list.json'
     }), 
 
     mounted: function(){
-        cityJson.forEach(element => {
-          this.city.push(element.name);
-        });
+
+      var self=this
+
+      cityJson.forEach(element => {
+        this.city.push(element.name);
+      });
+      
+      axios.get("http://localhost:3000/guests")
+      .then(function (response) {
+            for (var i=0; i<response.data.length; i++) {
+                
+              self.guestList.push(response.data[i])             
+            
+            }
+      })                
+      .catch(function (error) {
+          // handle error
+          console.log(error);
+      })
+      .then(function () {
+          // always executed
+      });
     },
 
     methods: ({
@@ -191,11 +209,9 @@ import cityJson from '../json/city_list.json'
         axios.get("http://localhost:3000/guests")
         .then(function (response) {
                 console.log(response.data);
-              for (var i=0; i<response.data.length; i++) {
-                
+              for (var i=0; i<response.data.length; i++) {                
                   
-                  self.guestList.push(response.data[i])
-              
+                  self.guestList.push(response.data[i])             
               
               }
         })                
