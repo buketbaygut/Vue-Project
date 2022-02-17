@@ -31,6 +31,9 @@
             Name
           </th>
           <th class="text-left">
+            LastName
+          </th>
+          <th class="text-left">
             City
           </th>
           <th class="text-left">
@@ -47,8 +50,9 @@
           :key="item.id"
         >
           <td>{{ item.firstName }}</td>
+          <td>{{ item.surname }}</td>
           <td>{{ item.city }}</td>
-          <td>{{ item.userId }}</td>
+          <td>{{ item.relation }}</td>
           <td>{{ item.fromWho }}</td>
         </tr>
       </tbody>
@@ -62,23 +66,34 @@
           <v-form>
     <v-container>
       <v-row>
-
         <v-col
           cols="4"
         >
           <v-subheader style="justify-content: right;">Name :</v-subheader>
         </v-col>
-
         <v-col
           cols="4"
         >
           <v-text-field
             outlined
-            dense
+            dense v-model="guestName"
           ></v-text-field>
         </v-col>
-        
-
+      </v-row>
+      <v-row>
+        <v-col
+          cols="4"
+        >
+          <v-subheader style="justify-content: right;">Surname :</v-subheader>
+        </v-col>
+        <v-col
+          cols="4"
+        >
+          <v-text-field
+            outlined
+            dense v-model="guestSurname"
+          ></v-text-field>
+        </v-col>
       </v-row>
       <v-row>
         <v-col
@@ -92,9 +107,9 @@
         >
         <v-autocomplete
             ref="city"
-            v-model="city"
-            :rules="[() => !!city || 'This field is required']"
-            :items="city"
+            v-model="guestCity"
+            :rules="[() => !!guestCity || 'This field is required']"
+            :items="guestCity"
             label="City"
             placeholder="Select..."
             required
@@ -144,6 +159,7 @@
       <div class="text-center">
         <v-btn
           elevation="2"
+          @click="addGuest()"
         >ADD</v-btn>
       </div>
 
@@ -165,7 +181,9 @@ import cityJson from '../json/city_list.json'
   export default {
     data: () => ({   
       //city: ['Diyarbakır','Ankara','İstanbul'],
-      city:[],
+      guestCity:[],
+      guestName:'',
+      guestSurname:'',
       fromWho : ['Buket','Umut','Both'],
       relation : ['Family','Friends','Relative'],
       guestList: [
@@ -183,7 +201,7 @@ import cityJson from '../json/city_list.json'
       var self=this
 
       cityJson.forEach(element => {
-        this.city.push(element.name);
+        this.guestCity.push(element.name);
       });
       
       axios.get("http://localhost:3000/guests")
@@ -223,6 +241,28 @@ import cityJson from '../json/city_list.json'
                 // always executed
             });
 
+      },
+
+      addGuest(){
+        axios.post("http://localhost:3000/guests",{
+                    firstName:this.guestName,
+                    surname:this.guestSurname,
+                    fromWho:this.fromWho,
+                    city:this.guestCity,
+                    relation:this.relation
+                })
+                .then(function (response) {
+                    // handle success
+                    console.log(response);
+                    window.location.reload()
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+                .then(function () {
+                    // always executed
+                });
       }
     })
 

@@ -31,28 +31,20 @@
   ],
   "guests": [
     {
-      "id": 1,
-      "firstName": "hamide",
-      "lastName": "ulu",
-      "fromWho" : "Buket",
-      "city" : "Ankara",
-      "userId": 1
+      "firstName": "Hamide",
+      "surname": "Ulu",
+      "fromWho": "Buket",
+      "city": "Ankara",
+      "relation": "Family",
+      "id": 1
     },
     {
-      "id": 3,
-      "firstName": "şükran",
-      "lastName": "bayğut",
-      "fromWho" : "Umut",
-      "city" : "Diyarbakır",
-      "userId": 2
-    },
-    {
-      "id": 4,
-      "firstName": "talha",
-      "lastName": "ardıç",
-      "fromWho" : "Both",
-      "city" : "İstanbul",
-      "userId": 3
+      "firstName": "Şükran",
+      "surname": "Bayğut",
+      "fromWho": "Umut",
+      "city": "Diyarbakır",
+      "relation": "Family",
+      "id": 2
     }
   ]
 }
