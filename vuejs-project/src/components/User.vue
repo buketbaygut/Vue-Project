@@ -90,7 +90,7 @@
         <v-col
           cols="4"
         >
-        <!-- <v-autocomplete
+        <v-autocomplete
             ref="city"
             v-model="city"
             :rules="[() => !!city || 'This field is required']"
@@ -98,13 +98,7 @@
             label="City"
             placeholder="Select..."
             required
-          ></v-autocomplete> -->
-          <select
-            class="form-control"
-            v-model="city"
-            >
-            <option :value="city.id" v-for="(city) in city" :key="city.id">{{city.name}}</option>
-            </select>
+          ></v-autocomplete>
         </v-col>
       </v-row>
       <v-row>
@@ -172,7 +166,7 @@ import cityJson from '../json/city_list.json'
   export default {
     data: () => ({   
       //city: ['Diyarbakır','Ankara','İstanbul'],
-      city:cityJson,
+      city:[],
       fromWho : ['Buket','Umut','Both'],
       relation : ['Family','Friends','Relative'],
       guestList: [
@@ -184,6 +178,12 @@ import cityJson from '../json/city_list.json'
         // }
       ],
     }), 
+
+    mounted: function(){
+        cityJson.forEach(element => {
+          this.city.push(element.name);
+        });
+    },
 
     methods: ({
       setGuestList(){
