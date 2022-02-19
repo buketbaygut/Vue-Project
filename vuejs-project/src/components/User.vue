@@ -77,6 +77,7 @@
           <v-text-field
             outlined
             dense v-model="guestName"
+            required
           ></v-text-field>
         </v-col>
       </v-row>
@@ -92,6 +93,7 @@
           <v-text-field
             outlined
             dense v-model="guestSurname"
+            required
           ></v-text-field>
         </v-col>
       </v-row>
@@ -109,7 +111,9 @@
             ref="city"
             v-model="guestCity"
             :rules="[() => !!guestCity || 'This field is required']"
-            :items="guestCity"
+            :items="cities"
+            :item-text="cities.name"
+            :item-value="cities.id"
             label="City"
             placeholder="Select..."
             required
@@ -129,8 +133,8 @@
           <v-autocomplete
             ref="fromWho"
             v-model="fromWho"
-            :rules="[() => !!fromWho || 'This field is required']"
-            :items="fromWho"
+            :rules="[() => !!fromWhoList || 'This field is required']"
+            :items="fromWhoList"
             placeholder="Select..."
             required
           ></v-autocomplete>
@@ -149,8 +153,8 @@
           <v-autocomplete
             ref="relation"
             v-model="relation"
-            :rules="[() => !!relation || 'This field is required']"
-            :items="relation"
+            :rules="[() => !!relationList || 'This field is required']"
+            :items="relationList"
             placeholder="Select..."
             required
           ></v-autocomplete>
@@ -180,12 +184,16 @@ const axios = require('axios').default;
 import cityJson from '../json/city_list.json'
   export default {
     data: () => ({   
-      //city: ['Diyarbakır','Ankara','İstanbul'],
-      guestCity:[],
+      //city: ['Diyarbakır','Ankara','İstanbul'],   
+      guestCity:'',
+      cities:[],
+      cityID:[],
       guestName:'',
       guestSurname:'',
-      fromWho : ['Buket','Umut','Both'],
-      relation : ['Family','Friends','Relative'],
+      fromWho:'',
+      relation:'',
+      fromWhoList : ['Buket','Umut','Both'],
+      relationList : ['Family','Friends','Relative'],
       guestList: [
         // {
         //   name: 'Seda',
@@ -201,7 +209,8 @@ import cityJson from '../json/city_list.json'
       var self=this
 
       cityJson.forEach(element => {
-        this.guestCity.push(element.name);
+        this.cities.push(element.name);
+        this.cityID.push(element.id);
       });
       
       axios.get("http://localhost:3000/guests")
@@ -244,6 +253,13 @@ import cityJson from '../json/city_list.json'
       },
 
       addGuest(){
+        //TODO:Sor
+        // cityJson.forEach(element => {
+        //   if (element.name == this.guestCity) {
+        //     this.guestCity = element.id
+        //   }
+        // });
+
         axios.post("http://localhost:3000/guests",{
                     firstName:this.guestName,
                     surname:this.guestSurname,
