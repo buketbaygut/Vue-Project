@@ -96,7 +96,6 @@
   </v-card>
 </template>
 <script>
-//import Enumerable from 'linq'
 const axios = require('axios').default;
 const dbUrl = "http://localhost:3000/"
   export default {
@@ -117,6 +116,7 @@ const dbUrl = "http://localhost:3000/"
 
         var inputEmail = this.email;
         var inputPassword = this.password;
+        var router = this.$router;
 
         if (this.isLoggin) {
             
@@ -126,9 +126,10 @@ const dbUrl = "http://localhost:3000/"
                 .then(function (response) {
                     
                     if (response.data.length >= 1) {
-                    console.log("Giriş başarılı")
+                        console.log("Giriş başarılı")
+                        router.push('/user')
                     }else{
-                    alert("Email veya password yanlış");
+                        alert("Email veya password yanlış");
                     }
                 })
                 .catch(function (error) {
