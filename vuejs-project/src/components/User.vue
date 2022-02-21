@@ -5,7 +5,8 @@
       color="primary"
       dark
     >
-      <v-toolbar-title>User Profile</v-toolbar-title>
+      <v-toolbar-title class="flex text-center">User Profile</v-toolbar-title>      
+      <button @click="signOut()" >Sign Out</button>
     </v-toolbar>
     <v-tabs vertical>
       <v-tab>
@@ -282,6 +283,11 @@ import cityJson from '../json/city_list.json'
                 .then(function () {
                     // always executed
                 });
+      },
+
+      signOut(){
+        var router = this.$router;
+        router.go(-1) 
       }
     })
 
