@@ -11,6 +11,7 @@
             <v-text-field
                 ref="email"
                 v-model="email"
+                :rules="[() => !!email || 'This field is required']"
                 label="Email"
                 placeholder="John Doe"
                 icon="user"
@@ -19,6 +20,7 @@
             <v-text-field
                 ref="password"
                 v-model="password"
+                :rules="[() => !!password || 'This field is required']"
                 label="Password"
                 icon="user"
                 type="password"
@@ -30,6 +32,7 @@
             <v-text-field
                 ref="name"
                 v-model="name"
+                :rules="[() => !!name || 'This field is required']"
                 label="Name"
                 placeholder="Buket"
                 required
@@ -37,6 +40,7 @@
             <v-text-field
                 ref="surname"
                 v-model="surname"
+                :rules="[() => !!surname || 'This field is required']"
                 label="Surname"
                 placeholder="Bayğut"
                 required
@@ -45,6 +49,7 @@
                 ref="email"
                 type="email"
                 v-model="email"
+                :rules="[() => !!email || 'This field is required']"
                 label="Email"
                 placeholder="John Doe"
                 required
@@ -52,6 +57,7 @@
             <v-text-field
                 ref="password"
                 v-model="password"
+                :rules="[() => !!password || 'This field is required']"
                 label="Password"
                 type="password"
                 required

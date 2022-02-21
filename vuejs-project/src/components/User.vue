@@ -77,6 +77,7 @@
           <v-text-field
             outlined
             dense v-model="guestName"
+            :rules="[() => !!guestName || 'This field is required']"
             required
           ></v-text-field>
         </v-col>
@@ -93,6 +94,7 @@
           <v-text-field
             outlined
             dense v-model="guestSurname"
+            :rules="[() => !!guestSurname || 'This field is required']"
             required
           ></v-text-field>
         </v-col>

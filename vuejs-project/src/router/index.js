@@ -9,18 +9,19 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: User
-  },
-  {
-    path: '/login',
     name: 'LoginPage',
     component: LoginPage
+  },
+  {
+    path: '/user',
+    name: 'LoginPage',
+    component: User
   }
 ]
 
 const router = new VueRouter({
-  routes
+  routes,
+  mode:'history'
 })
 
 export default router
