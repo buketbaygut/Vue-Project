@@ -113,15 +113,15 @@ const dbUrl = "http://localhost:3000/"
 
     methods: {
       islemYap () {
-
+        var inputName = this.name;
+        var inputSurname = this.surname;
         var inputEmail = this.email;
-        var inputPassword = this.password;
+        var inputPassword = this.password;        
         var router = this.$router;
+        this.loading = true;
 
         if (this.isLoggin) {
             
-            this.loading = true;
-
             axios.get(dbUrl+'user?email='+inputEmail+'&password='+inputPassword)
                 .then(function (response) {
                     
@@ -138,85 +138,48 @@ const dbUrl = "http://localhost:3000/"
                 })
                 .then(function () {
                     // always executed
-                });
-            
-            // axios.get(dbUrl+'user')
-            // .then(function (response) {
-            //     let result = Enumerable.from(response.data).where(x=>x.email == inputEmail).toArray();
-            //     if (result.length >= 1) {
-            //         if (result[0].email == inputEmail && result[0].password == inputPassword) {
-            //         console.log("Giriş başarılı");
-            //         }else if (result[0].email == inputEmail) {
-            //             console.log("Şifre yanlış")
-            //         }
-            //     }else{
-            //         console.log("Kullanıcı bulunamadı")
-            //     }
-                
-            // })
-            // .catch(function (error) {
-            //     // handle error
-            //     console.log(error);
-            // })
-            // .then(function () {
-            //     // always executed
-            // });
-        }else{
-            var inputName = this.name;
-            var inputSurname = this.surname;
-            let result = this.dbControl(inputEmail);
-            if (result) {
-                axios.post(dbUrl+'user',{
-                    firstname:inputName,
-                    lastname:inputSurname,
-                    email:inputEmail,
-                    password:inputPassword
-                })
-                .then(function (response) {
-                    // handle success
-                    console.log(response);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-                .then(function () {
-                    // always executed
-                });
-            }else{
-                console.log("hatalı");
-            }
-            
-        }    
-        
-        setTimeout(() => (this.loading = false), 2000)
-      },
+                });           
+                 
+        }else{         
 
-      dbControl(inputEmail){
-          //senkron yapı kurabilirim!!
-          let sonuc = true;
-          console.log("girdi")
-          axios.get(dbUrl+'user?email='+inputEmail)
+            axios.get(dbUrl+'user?email='+inputEmail)
             .then(function (response) {
                 if (response.data.length>=1) {
-                    sonuc = false;
-                    console.log("Test ediyprum" + sonuc)
-                    return sonuc;
-                }
-                
+                    alert("Bu mail sistemde kayıtlı")
+                }else{
+                    axios.post(dbUrl+'user',{
+                        firstname:inputName,
+                        lastname:inputSurname,
+                        email:inputEmail,
+                        password:inputPassword
+                    })
+                    .then(function (response) {
+                        // handle success
+                        console.log(response);
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        console.log(error);
+                    })
+                    .then(function () {
+                        // always executed
+                    });
+                }                
             })
             .catch(function (error) {
                 // handle error
                 console.log(error);
             })
             .then(function () {
-                // always executed
+
             });
 
-            console.log(sonuc+"test");
             
-        return sonuc;
-      }
+            
+        }    
+        
+        setTimeout(() => (this.loading = false), 2000)
+      },
 
     },
   }
