@@ -93,6 +93,16 @@
         </v-btn>
         </v-card-actions>
     </v-card>
+
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="timeout"
+      v-bind:color="snackbarColor ? 'success':'error' "
+    >
+    <div style="text-align: center;">{{ message }}</div>
+      
+
+    </v-snackbar>
   </v-card>
 </template>
 <script>
@@ -109,6 +119,10 @@ const dbUrl = "http://localhost:3000/"
         register:"Register",
         isLoggin:true,
         loading: false,
+        snackbar: false,
+        message:'',
+        timeout: 2000,
+        snackbarColor:''
     }),
 
     methods: {
@@ -117,21 +131,29 @@ const dbUrl = "http://localhost:3000/"
         var inputSurname = this.surname;
         var inputEmail = this.email;
         var inputPassword = this.password;        
-        var router = this.$router;        
+        var router = this.$router; 
+        var self=this;       
 
         if (this.isLoggin) {
             if (inputEmail === "" || inputPassword === "") {
-                alert("Lütfen boş alanları doldurunuz!")
+                this.snackbar = true
+                this.snackbarColor = false
+                this.message = 'Lütfen boş alanları doldurunuz!'
             }else{
                 this.loading = true;
+                
                 axios.get(dbUrl+'user?email='+inputEmail+'&password='+inputPassword)
                     .then(function (response) {
                         
                         if (response.data.length >= 1) {
-                            console.log("Giriş başarılı")
+                            self.snackbar = true
+                            self.snackbarColor = true
+                            self.message = 'Başarılı!'
                             router.push('/profile')
                         }else{
-                            alert("Email veya password yanlış");
+                            self.snackbar = true
+                            self.snackbarColor = false
+                            self.message = 'Email veya password yanlış'
                         }
                     })
                     .catch(function (error) {
@@ -145,23 +167,30 @@ const dbUrl = "http://localhost:3000/"
                        
         }else{         
             if (inputName === "" || inputSurname === "" || inputEmail === "" || inputPassword === "") {
-                alert("Lütfen boş alanları doldurunuz!")
+                this.snackbar = true
+                this.snackbarColor = false
+                this.message = 'Lütfen boş alanları doldurunuz!'
             }else{
                 this.loading = true;
                 axios.get(dbUrl+'user?email='+inputEmail)
                 .then(function (response) {
                     if (response.data.length>=1) {
-                        alert("Bu mail sistemde kayıtlı")
-                    }else{
+                        self.snackbar = true
+                        self.snackbarColor = false
+                        self.message = 'Bu mail sistemde kayıtlı'
+                    }else{                        
                         axios.post(dbUrl+'user',{
                             firstname:inputName,
                             lastname:inputSurname,
                             email:inputEmail,
                             password:inputPassword
                         })
-                        .then(function (response) {
+                        .then(function () {
+                            self.snackbar = true
+                            self.snackbarColor = true
+                            self.message = 'Başarılı!'
+                            window.location.reload()
                             // handle success
-                            console.log(response);
                         })
                         .catch(function (error) {
                             // handle error

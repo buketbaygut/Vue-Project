@@ -176,6 +176,14 @@
         </v-card>
       </v-tab-item>
     </v-tabs>
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="timeout"
+      v-bind:color="snackbarColor ? 'success':'error' "
+    >
+      {{ message }}
+
+    </v-snackbar>
   </v-card>
   
 </template>
@@ -196,14 +204,11 @@ import cityJson from '../json/city_list.json'
       relation:'',
       fromWhoList : ['Buket','Umut','Both'],
       relationList : ['Family','Friends','Relative'],
-      guestList: [
-        // {
-        //   name: 'Seda',
-        //   city: 'İstanbul',
-        //   fromWho: 'Both',
-        //   relation: 'Friends'
-        // }
-      ],
+      guestList: [],
+      snackbar: false,
+      message:'',
+      timeout: 2000,
+      snackbarColor:''
     }), 
 
     mounted: function(){
@@ -237,13 +242,10 @@ import cityJson from '../json/city_list.json'
         var self=this
         axios.get("http://localhost:3000/guests")
         .then(function (response) {
-                console.log(response.data);
-
               for (var i=0; i<response.data.length; i++) {                
                 const temp = response.data[i];
                 temp.city = self.cities.find(a => a.id = temp.city).name;
                 self.guestList.push(temp)             
-              
               }
         })                
             .catch(function (error) {
@@ -262,9 +264,12 @@ import cityJson from '../json/city_list.json'
         var fromWho=this.fromWho;
         var city=this.guestCity;
         var relation=this.relation;
+        var self=this;
 
         if (firstName === "" || surname === "" || fromWho === "" || city === "" || relation === "") {
-          alert("Lütfen boş alanları kontrol ediniz.")
+          this.snackbar = true
+          this.snackbarColor = false
+          this.message = 'Lütfen boş alanları doldurunuz!'
         } else {
           axios.post("http://localhost:3000/guests",{
                     firstName:firstName,
@@ -273,9 +278,11 @@ import cityJson from '../json/city_list.json'
                     city:city,
                     relation:relation
                 })
-                .then(function (response) {
+                .then(function () {
                     // handle success
-                    console.log(response);
+                    self.snackbar = true
+                    self.snackbarColor = true
+                    self.message = 'Başarılı!'
                     window.location.reload()
                 })
                 .catch(function (error) {
