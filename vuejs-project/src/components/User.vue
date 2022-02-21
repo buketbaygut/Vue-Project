@@ -257,19 +257,21 @@ import cityJson from '../json/city_list.json'
       },
 
       addGuest(){
-        //TODO:Sor
-        // cityJson.forEach(element => {
-        //   if (element.name == this.guestCity) {
-        //     this.guestCity = element.id
-        //   }
-        // });
+        var firstName=this.guestName;
+        var surname=this.guestSurname;
+        var fromWho=this.fromWho;
+        var city=this.guestCity;
+        var relation=this.relation;
 
-        axios.post("http://localhost:3000/guests",{
-                    firstName:this.guestName,
-                    surname:this.guestSurname,
-                    fromWho:this.fromWho,
-                    city:this.guestCity,
-                    relation:this.relation
+        if (firstName === "" || surname === "" || fromWho === "" || city === "" || relation === "") {
+          alert("Lütfen boş alanları kontrol ediniz.")
+        } else {
+          axios.post("http://localhost:3000/guests",{
+                    firstName:firstName,
+                    surname:surname,
+                    fromWho:fromWho,
+                    city:city,
+                    relation:relation
                 })
                 .then(function (response) {
                     // handle success
@@ -283,6 +285,7 @@ import cityJson from '../json/city_list.json'
                 .then(function () {
                     // always executed
                 });
+        }        
       },
 
       signOut(){
