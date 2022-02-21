@@ -51,7 +51,7 @@
         >
           <td>{{ item.firstName }}</td>
           <td>{{ item.surname }}</td>
-          <td>{{ item.city }}</td>
+          <td>{{ cities.find(a=>a.id === item.city).name }}</td>
           <td>{{ item.relation }}</td>
           <td>{{ item.fromWho }}</td>
         </tr>
@@ -112,8 +112,8 @@
             v-model="guestCity"
             :rules="[() => !!guestCity || 'This field is required']"
             :items="cities"
-            :item-text="cities.name"
-            :item-value="cities.id"
+            item-text="name"
+            item-value="id"
             label="City"
             placeholder="Select..."
             required
@@ -187,7 +187,6 @@ import cityJson from '../json/city_list.json'
       //city: ['Diyarbakır','Ankara','İstanbul'],   
       guestCity:'',
       cities:[],
-      cityID:[],
       guestName:'',
       guestSurname:'',
       fromWho:'',
@@ -209,15 +208,15 @@ import cityJson from '../json/city_list.json'
       var self=this
 
       cityJson.forEach(element => {
-        this.cities.push(element.name);
-        this.cityID.push(element.id);
+        this.cities.push(element);
       });
       
       axios.get("http://localhost:3000/guests")
       .then(function (response) {
             for (var i=0; i<response.data.length; i++) {
-                
-              self.guestList.push(response.data[i])             
+              const temp = response.data[i];
+              //temp.city = self.cities.find(a => a.id === temp.city).name;
+              self.guestList.push(temp)               
             
             }
       })                
@@ -236,9 +235,11 @@ import cityJson from '../json/city_list.json'
         axios.get("http://localhost:3000/guests")
         .then(function (response) {
                 console.log(response.data);
+
               for (var i=0; i<response.data.length; i++) {                
-                  
-                  self.guestList.push(response.data[i])             
+                const temp = response.data[i];
+                temp.city = self.cities.find(a => a.id = temp.city).name;
+                self.guestList.push(temp)             
               
               }
         })                
