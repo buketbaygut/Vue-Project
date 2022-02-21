@@ -117,45 +117,22 @@ const dbUrl = "http://localhost:3000/"
         var inputSurname = this.surname;
         var inputEmail = this.email;
         var inputPassword = this.password;        
-        var router = this.$router;
-        this.loading = true;
+        var router = this.$router;        
 
         if (this.isLoggin) {
-            
-            axios.get(dbUrl+'user?email='+inputEmail+'&password='+inputPassword)
-                .then(function (response) {
-                    
-                    if (response.data.length >= 1) {
-                        console.log("Giriş başarılı")
-                        router.push('/user')
-                    }else{
-                        alert("Email veya password yanlış");
-                    }
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-                .then(function () {
-                    // always executed
-                });           
-                 
-        }else{         
-
-            axios.get(dbUrl+'user?email='+inputEmail)
-            .then(function (response) {
-                if (response.data.length>=1) {
-                    alert("Bu mail sistemde kayıtlı")
-                }else{
-                    axios.post(dbUrl+'user',{
-                        firstname:inputName,
-                        lastname:inputSurname,
-                        email:inputEmail,
-                        password:inputPassword
-                    })
+            if (inputEmail === "" || inputPassword === "") {
+                alert("Lütfen boş alanları doldurunuz!")
+            }else{
+                this.loading = true;
+                axios.get(dbUrl+'user?email='+inputEmail+'&password='+inputPassword)
                     .then(function (response) {
-                        // handle success
-                        console.log(response);
+                        
+                        if (response.data.length >= 1) {
+                            console.log("Giriş başarılı")
+                            router.push('/profile')
+                        }else{
+                            alert("Email veya password yanlış");
+                        }
                     })
                     .catch(function (error) {
                         // handle error
@@ -164,18 +141,45 @@ const dbUrl = "http://localhost:3000/"
                     .then(function () {
                         // always executed
                     });
-                }                
-            })
-            .catch(function (error) {
-                // handle error
-                console.log(error);
-            })
-            .then(function () {
+            }
+                       
+        }else{         
+            if (inputName === "" || inputSurname === "" || inputEmail === "" || inputPassword === "") {
+                alert("Lütfen boş alanları doldurunuz!")
+            }else{
+                this.loading = true;
+                axios.get(dbUrl+'user?email='+inputEmail)
+                .then(function (response) {
+                    if (response.data.length>=1) {
+                        alert("Bu mail sistemde kayıtlı")
+                    }else{
+                        axios.post(dbUrl+'user',{
+                            firstname:inputName,
+                            lastname:inputSurname,
+                            email:inputEmail,
+                            password:inputPassword
+                        })
+                        .then(function (response) {
+                            // handle success
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            // handle error
+                            console.log(error);
+                        })
+                        .then(function () {
+                            // always executed
+                        });
+                    }                
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+                .then(function () {
 
-            });
-
-            
-            
+                });
+            }           
         }    
         
         setTimeout(() => (this.loading = false), 2000)

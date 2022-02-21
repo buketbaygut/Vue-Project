@@ -13,7 +13,7 @@ const routes = [
     component: LoginPage
   },
   {
-    path: '/user',
+    path: '/profile',
     name: 'LoginPage',
     component: User
   }

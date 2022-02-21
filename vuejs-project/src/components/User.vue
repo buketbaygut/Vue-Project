@@ -28,19 +28,19 @@
     <template v-slot:default>
       <thead>
         <tr>
-          <th class="text-left">
+          <th class="text-center">
             Name
           </th>
-          <th class="text-left">
+          <th class="text-center">
             LastName
           </th>
-          <th class="text-left">
+          <th class="text-center">
             City
           </th>
-          <th class="text-left">
+          <th class="text-center">
             Relation
           </th>
-          <th class="text-left">
+          <th class="text-center">
             From Who
           </th>
         </tr>
