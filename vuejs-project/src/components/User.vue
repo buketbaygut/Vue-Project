@@ -11,6 +11,7 @@
     <v-tabs vertical>
       <v-tab>
         <v-icon left>
+          mdi-format-list-bulleted
         </v-icon>
         List
       </v-tab>
@@ -79,6 +80,7 @@
             outlined
             dense v-model="guestName"
             :rules="[() => !!guestName || 'This field is required']"
+            label="Name"
             required
           ></v-text-field>
         </v-col>
@@ -96,6 +98,7 @@
             outlined
             dense v-model="guestSurname"
             :rules="[() => !!guestSurname || 'This field is required']"
+            label="Surname"
             required
           ></v-text-field>
         </v-col>
