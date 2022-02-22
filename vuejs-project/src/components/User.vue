@@ -138,6 +138,7 @@
             v-model="fromWho"
             :rules="[() => !!fromWhoList || 'This field is required']"
             :items="fromWhoList"
+            label="From Who"
             placeholder="Select..."
             required
           ></v-autocomplete>
@@ -158,6 +159,7 @@
             v-model="relation"
             :rules="[() => !!relationList || 'This field is required']"
             :items="relationList"
+            label="Relation"
             placeholder="Select..."
             required
           ></v-autocomplete>
@@ -215,16 +217,12 @@ import cityJson from '../json/city_list.json'
 
       var self=this
 
-      cityJson.forEach(element => {
-        this.cities.push(element);
-      });
+      this.cities = cityJson;
       
       axios.get("http://localhost:3000/guests")
       .then(function (response) {
             for (var i=0; i<response.data.length; i++) {
-              const temp = response.data[i];
-              //temp.city = self.cities.find(a => a.id === temp.city).name;
-              self.guestList.push(temp)               
+              self.guestList.push(response.data[i])           
             
             }
       })                
@@ -238,45 +236,20 @@ import cityJson from '../json/city_list.json'
     },
 
     methods: ({
-      setGuestList(){
-        var self=this
-        axios.get("http://localhost:3000/guests")
-        .then(function (response) {
-              for (var i=0; i<response.data.length; i++) {                
-                const temp = response.data[i];
-                temp.city = self.cities.find(a => a.id = temp.city).name;
-                self.guestList.push(temp)             
-              }
-        })                
-            .catch(function (error) {
-                // handle error
-                console.log(error);
-            })
-            .then(function () {
-                // always executed
-            });
-
-      },
 
       addGuest(){
-        var firstName=this.guestName;
-        var surname=this.guestSurname;
-        var fromWho=this.fromWho;
-        var city=this.guestCity;
-        var relation=this.relation;
         var self=this;
-
-        if (firstName === "" || surname === "" || fromWho === "" || city === "" || relation === "") {
+        if (this.guestName === "" || this.guestSurname === "" || this.fromWho === "" || this.guestCity === "" || this.relation === "") {
           this.snackbar = true
           this.snackbarColor = false
           this.message = 'Lütfen boş alanları doldurunuz!'
         } else {
           axios.post("http://localhost:3000/guests",{
-                    firstName:firstName,
-                    surname:surname,
-                    fromWho:fromWho,
-                    city:city,
-                    relation:relation
+                    firstName:this.guestName,
+                    surname:this.guestSurname,
+                    fromWho:this.fromWho,
+                    city:this.guestCity,
+                    relation:this.relation
                 })
                 .then(function () {
                     // handle success

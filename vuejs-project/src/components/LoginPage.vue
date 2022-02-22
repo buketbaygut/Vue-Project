@@ -126,23 +126,19 @@ const dbUrl = "http://localhost:3000/"
     }),
 
     methods: {
-      islemYap () {
-        var inputName = this.name;
-        var inputSurname = this.surname;
-        var inputEmail = this.email;
-        var inputPassword = this.password;        
+      islemYap () {      
         var router = this.$router; 
         var self=this;       
 
         if (this.isLoggin) {
-            if (inputEmail === "" || inputPassword === "") {
+            if (this.email === "" || this.password === "") {
                 this.snackbar = true
                 this.snackbarColor = false
                 this.message = 'Lütfen boş alanları doldurunuz!'
             }else{
                 this.loading = true;
                 
-                axios.get(dbUrl+'user?email='+inputEmail+'&password='+inputPassword)
+                axios.get(dbUrl+'user?email='+this.email+'&password='+this.password)
                     .then(function (response) {
                         
                         if (response.data.length >= 1) {
@@ -166,13 +162,13 @@ const dbUrl = "http://localhost:3000/"
             }
                        
         }else{         
-            if (inputName === "" || inputSurname === "" || inputEmail === "" || inputPassword === "") {
+            if (this.name === "" || this.surname === "" || this.email === "" || this.password === "") {
                 this.snackbar = true
                 this.snackbarColor = false
                 this.message = 'Lütfen boş alanları doldurunuz!'
             }else{
                 this.loading = true;
-                axios.get(dbUrl+'user?email='+inputEmail)
+                axios.get(dbUrl+'user?email='+this.email)
                 .then(function (response) {
                     if (response.data.length>=1) {
                         self.snackbar = true
@@ -180,10 +176,10 @@ const dbUrl = "http://localhost:3000/"
                         self.message = 'Bu mail sistemde kayıtlı'
                     }else{                        
                         axios.post(dbUrl+'user',{
-                            firstname:inputName,
-                            lastname:inputSurname,
-                            email:inputEmail,
-                            password:inputPassword
+                            firstname:this.name,
+                            lastname:this.surname,
+                            email:this.email,
+                            password:this.password
                         })
                         .then(function () {
                             self.snackbar = true
