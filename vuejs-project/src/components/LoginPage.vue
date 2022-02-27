@@ -126,9 +126,13 @@ const dbUrl = "http://localhost:3000/"
     }),
 
     methods: {
+    setTokenCookies(accessToken) {
+        this.$cookies.set('accessToken',accessToken)
+      },
       islemYap () {      
         var router = this.$router; 
-        var self=this;       
+        var self=this;      
+        
 
         if (this.isLoggin) {
             if (this.email === "" || this.password === "") {
@@ -137,28 +141,30 @@ const dbUrl = "http://localhost:3000/"
                 this.message = 'Lütfen boş alanları doldurunuz!'
             }else{
                 this.loading = true;
-                
-                axios.get(dbUrl+'user?email='+this.email+'&password='+this.password)
-                    .then(function (response) {
-                        
-                        if (response.data.length >= 1) {
-                            self.snackbar = true
-                            self.snackbarColor = true
-                            self.message = 'Başarılı!'
-                            router.push('/profile')
-                        }else{
-                            self.snackbar = true
-                            self.snackbarColor = false
-                            self.message = 'Email veya password yanlış'
-                        }
-                    })
-                    .catch(function (error) {
-                        // handle error
-                        console.log(error);
-                    })
-                    .then(function () {
-                        // always executed
-                    });
+                axios.post(dbUrl+"login",{
+                    email : this.email,
+                    password : this.password
+                })
+                .then(function (response) {
+                    // handle success
+                    if (response.status == 200){                        
+                        self.setTokenCookies(response.data.accessToken)
+                        self.snackbar = true
+                        self.snackbarColor = true
+                        self.message = 'Başarılı!'
+                        router.push('/profile')
+                    }
+                })
+                .catch(function (error) {
+                    // handle error
+                    self.snackbar = true
+                    self.snackbarColor = false
+                    self.message = error.response.data
+                    alert(error.response.data);
+                })
+                .then(function () {
+                    // always executed
+                });
             }
                        
         }else{         
@@ -168,41 +174,33 @@ const dbUrl = "http://localhost:3000/"
                 this.message = 'Lütfen boş alanları doldurunuz!'
             }else{
                 this.loading = true;
-                axios.get(dbUrl+'user?email='+this.email)
+                axios.post(dbUrl+'register',{
+                    firstname:this.name,
+                    lastname:this.surname,
+                    email:this.email,
+                    password:this.password
+                })
                 .then(function (response) {
-                    if (response.data.length>=1) {
+                    console.log(response.data)
+                    if (response.data.accessToken != null){
+                        self.$cookies.get('accessToken')
                         self.snackbar = true
-                        self.snackbarColor = false
-                        self.message = 'Bu mail sistemde kayıtlı'
-                    }else{                        
-                        axios.post(dbUrl+'user',{
-                            firstname:this.name,
-                            lastname:this.surname,
-                            email:this.email,
-                            password:this.password
-                        })
-                        .then(function () {
-                            self.snackbar = true
-                            self.snackbarColor = true
-                            self.message = 'Başarılı!'
-                            window.location.reload()
-                            // handle success
-                        })
-                        .catch(function (error) {
-                            // handle error
-                            console.log(error);
-                        })
-                        .then(function () {
-                            // always executed
-                        });
-                    }                
+                        self.snackbarColor = true
+                        self.message = 'Başarılı!'
+                        window.location.reload()
+                    }
+                    
+                    // handle success
                 })
                 .catch(function (error) {
                     // handle error
+                    self.snackbar = true
+                    self.snackbarColor = false
+                    self.message = error.response.data
                     console.log(error);
                 })
                 .then(function () {
-
+                    // always executed
                 });
             }           
         }    

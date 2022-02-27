@@ -1,0 +1,58 @@
+{
+    "user": [
+      {
+        "id": 1,
+        "firstname": "",
+        "lastname": "",
+        "email": "buket",
+        "password": "12"
+      },
+      {
+        "id": 2,
+        "firstname": "",
+        "lastname": "",
+        "email": "umut",
+        "password": "12"
+      },
+      {
+        "firstname": "ortak",
+        "lastname": "ortak",
+        "email": "ortak",
+        "password": "12",
+        "id": 3
+      },
+      {
+        "firstname": "",
+        "lastname": "",
+        "email": "buket",
+        "password": "Password",
+        "id": 4
+      }
+    ],
+    "guests": [
+      {
+        "firstName": "Hamide",
+        "surname": "Ulu",
+        "fromWho": "Buket",
+        "city": 6,
+        "relation": "Family",
+        "id": 1
+      },
+      {
+        "firstName": "Şükran",
+        "surname": "Bayğut",
+        "fromWho": "Umut",
+        "city": 21,
+        "relation": "Family",
+        "id": 2
+      },
+      {
+        "firstName": "asd",
+        "surname": "asd",
+        "fromWho": "Umut",
+        "city": 6,
+        "relation": "Friends",
+        "id": 3
+      }
+    ]
+  }

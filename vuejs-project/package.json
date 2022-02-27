@@ -10,7 +10,11 @@
   "dependencies": {
     "axios": "^0.24.0",
     "core-js": "^3.6.5",
+    "express": "^4.17.3",
+    "json-server": "^0.17.0",
+    "json-server-auth": "^2.1.0",
     "vue": "^2.6.11",
+    "vue-cookies": "^1.7.4",
     "vue-router": "^3.5.3",
     "vuetify": "^2.4.0"
   },
