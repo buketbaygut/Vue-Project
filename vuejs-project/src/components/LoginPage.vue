@@ -146,6 +146,7 @@ const dbUrl = "http://localhost:3000/"
                     password : this.password
                 })
                 .then(function (response) {
+                    console.log(response.data)
                     // handle success
                     if (response.status == 200){                        
                         self.setTokenCookies(response.data.accessToken)
@@ -174,14 +175,13 @@ const dbUrl = "http://localhost:3000/"
                 this.message = 'Lütfen boş alanları doldurunuz!'
             }else{
                 this.loading = true;
-                axios.post(dbUrl+'register',{
+                axios.post(dbUrl+'user',{
                     firstname:this.name,
                     lastname:this.surname,
                     email:this.email,
                     password:this.password
                 })
                 .then(function (response) {
-                    console.log(response.data)
                     if (response.data.accessToken != null){
                         self.$cookies.get('accessToken')
                         self.snackbar = true
@@ -190,13 +190,12 @@ const dbUrl = "http://localhost:3000/"
                         window.location.reload()
                     }
                     
-                    // handle success
                 })
                 .catch(function (error) {
                     // handle error
                     self.snackbar = true
                     self.snackbarColor = false
-                    self.message = error.response.data
+                    self.message = "Hata"
                     console.log(error);
                 })
                 .then(function () {

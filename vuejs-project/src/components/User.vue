@@ -154,6 +154,42 @@
           ></v-autocomplete>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col
+          cols="4"
+        >
+          <v-subheader style="justify-content: right;">Ankara Count :</v-subheader>
+        </v-col>
+        <v-col
+          cols="4"
+        >
+          <v-text-field
+            outlined
+            dense v-model="ankaraCount"
+            :rules="[() => !!ankaraCount || 'This field is required']"
+            label="ankaraCount"
+            required
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col
+          cols="4"
+        >
+          <v-subheader style="justify-content: right;">Diyarbakır Count :</v-subheader>
+        </v-col>
+        <v-col
+          cols="4"
+        >
+          <v-text-field
+            outlined
+            dense v-model="diyarbakırCount"
+            :rules="[() => !!diyarbakırCount || 'This field is required']"
+            label="diyarbakırCount"
+            required
+          ></v-text-field>
+        </v-col>
+      </v-row>
       <div class="text-center">
         <v-btn
           elevation="2"
@@ -181,12 +217,10 @@
 
 <script>
 const axios = require('axios').default;
-//const dbUrl = "http://localhost:3000/"
 
 import cityJson from '../json/city_list.json'
   export default {
-    data: () => ({   
-      //city: ['Diyarbakır','Ankara','İstanbul'],   
+    data: () => ({     
       guestCity:'',
       search: '',
       cities:[],
@@ -200,6 +234,8 @@ import cityJson from '../json/city_list.json'
       message:'',
       timeout: 2000,
       snackbarColor:'',
+      diyarbakırCount:0,
+      ankaraCount:0,
       headers: [
           {
             text: 'Name',
@@ -221,8 +257,16 @@ import cityJson from '../json/city_list.json'
       var self=this
 
       this.cities = cityJson;
+      var config = {
+        method: 'GET',
+        url: 'http://localhost:3000/guests',
+        headers: { 
+          'Content-Type': 'text/xml;charset=UTF-8', 
+          'accessToken': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYmlrYXNoLmR1bGFsQHdlc2lvbmFyeS50ZWFtIiwidXNlciI6dHJ1ZSwiZXhwIjoxNjQ3NDI2MzY4LCJpYXQiOjE2NDcyNTM1NjgsImlzcyI6IkJpa2FzaCIsInRleHQiOiJidWtldCJ9.WCl45rk-eZRNaSf7MfuuZ7LS5om_YLaXRx7H7p6638k'
+        }
+      };
       
-      axios.get("http://localhost:3000/guests")
+      axios.get('http://localhost:3000/guests', {headers:config.headers})
       .then(function (response) {
             for (var i=0; i<response.data.length; i++) {
               self.guestList.push({
@@ -257,7 +301,9 @@ import cityJson from '../json/city_list.json'
                     surname:this.guestSurname,
                     fromWho:this.fromWho,
                     city:this.guestCity,
-                    relation:this.relation
+                    relation:this.relation,
+                    ankaraCount:this.ankaraCount,
+                    diyarbakırCount: this.diyarbakırCount
                 })
                 .then(function () {
                     // handle success
