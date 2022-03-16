@@ -158,16 +158,16 @@
         <v-col
           cols="4"
         >
-          <v-subheader style="justify-content: right;">Ankara Count :</v-subheader>
+          <v-subheader style="justify-content: right;">Ankara'ya Gelecek Misafir Sayısı :</v-subheader>
         </v-col>
         <v-col
           cols="4"
         >
           <v-text-field
             outlined
-            dense v-model="ankaraCount"
-            :rules="[() => !!ankaraCount || 'This field is required']"
-            label="ankaraCount"
+            dense v-model="ankaraGuestCount"
+            :rules="[() => !!ankaraGuestCount || 'This field is required']"
+            label="Ankara Misafir Sayısı"
             required
           ></v-text-field>
         </v-col>
@@ -176,16 +176,16 @@
         <v-col
           cols="4"
         >
-          <v-subheader style="justify-content: right;">Diyarbakır Count :</v-subheader>
+          <v-subheader style="justify-content: right;">Diyarbakır'a Gelecek Misafir Sayısı :</v-subheader>
         </v-col>
         <v-col
           cols="4"
         >
           <v-text-field
             outlined
-            dense v-model="diyarbakırCount"
-            :rules="[() => !!diyarbakırCount || 'This field is required']"
-            label="diyarbakırCount"
+            dense v-model="diyarbakirGuestCount"
+            :rules="[() => !!diyarbakirGuestCount || 'This field is required']"
+            label="Diyarbakır Misafir Sayısı"
             required
           ></v-text-field>
         </v-col>
@@ -234,19 +234,21 @@ import cityJson from '../json/city_list.json'
       message:'',
       timeout: 2000,
       snackbarColor:'',
-      diyarbakırCount:0,
-      ankaraCount:0,
+      diyarbakirGuestCount:'',
+      ankaraGuestCount:'',
       headers: [
           {
             text: 'Name',
-            align: 'start',
+            align: 'center',
             filterable: false,
-            value: 'name',
+            value: 'firstName',
           },
-          { text: 'Surname', value: 'surname' },
-          { text: 'City', value: 'city' },
-          { text: 'Relation', value: 'relation' },
-          { text: 'From Who', value: 'fromWho' },
+          { text: 'Surname', align: 'center', value: 'lastName' },
+          { text: 'City', align: 'center',value: 'city' },
+          { text: 'Relation', align: 'center',value: 'relation' },
+          { text: 'From Who', align: 'center',value: 'fromWho' },
+          { text: 'Ankara Misafir Sayısı', align: 'center',value: 'ankaraGuestCount' },
+          { text: 'Diyarbakır Misafir Sayısı', align: 'center',value: 'diyarbakirGuestCount' },
         ],
         guestList: [
         ],
@@ -258,11 +260,9 @@ import cityJson from '../json/city_list.json'
 
       this.cities = cityJson;
       var config = {
-        method: 'GET',
-        url: 'http://localhost:3000/guests',
         headers: { 
           'Content-Type': 'text/xml;charset=UTF-8', 
-          'accessToken': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYmlrYXNoLmR1bGFsQHdlc2lvbmFyeS50ZWFtIiwidXNlciI6dHJ1ZSwiZXhwIjoxNjQ3NDI2MzY4LCJpYXQiOjE2NDcyNTM1NjgsImlzcyI6IkJpa2FzaCIsInRleHQiOiJidWtldCJ9.WCl45rk-eZRNaSf7MfuuZ7LS5om_YLaXRx7H7p6638k'
+          'accessToken': self.$cookies.get('accessToken'),
         }
       };
       
@@ -270,11 +270,13 @@ import cityJson from '../json/city_list.json'
       .then(function (response) {
             for (var i=0; i<response.data.length; i++) {
               self.guestList.push({
-                name: response.data[i].firstName,
-                surname: response.data[i].surname,
-                city: self.cities.find(a=>a.id === response.data[i].city).name,
-                relation: response.data[i].relation,
-                fromWho: response.data[i].fromWho,
+                firstName: response.data[i].FirstName,
+                lastName: response.data[i].LastName,
+                city: self.cities.find(a=>a.id === response.data[i].City).name,
+                relation: response.data[i].Relation,
+                fromWho: response.data[i].FromWho,
+                ankaraGuestCount: response.data[i].AnkaraGuestCount,
+                diyarbakirGuestCount: response.data[i].DiyarbakirGuestCount,
               });      
             }
       })                
@@ -290,21 +292,32 @@ import cityJson from '../json/city_list.json'
     methods: ({
 
       addGuest(){
-        var self=this;
+        
         if (this.guestName === "" || this.guestSurname === "" || this.fromWho === "" || this.guestCity === "" || this.relation === "") {
           this.snackbar = true
           this.snackbarColor = false
           this.message = 'Lütfen boş alanları doldurunuz!'
         } else {
-          axios.post("http://localhost:3000/guests",{
-                    firstName:this.guestName,
-                    surname:this.guestSurname,
-                    fromWho:this.fromWho,
-                    city:this.guestCity,
-                    relation:this.relation,
-                    ankaraCount:this.ankaraCount,
-                    diyarbakırCount: this.diyarbakırCount
-                })
+          var data = {
+            firstName:this.guestName,
+            lastName:this.guestSurname,
+            fromWho:this.fromWho,
+            city:this.guestCity,
+            relation:this.relation,
+            ankaraGuestCount:this.ankaraGuestCount,
+            diyarbakirGuestCount: this.diyarbakirGuestCount
+          }
+
+          var config = {
+            method: 'post',
+            url: 'http://localhost:3000/guests',
+            headers: { 
+              'Content-Type': 'text/xml;charset=UTF-8', 
+              'accessToken': this.$cookies.get('accessToken'),
+            },
+            data:data
+          };
+          axios(config)
                 .then(function () {
                     // handle success
                     self.snackbar = true
