@@ -160,8 +160,8 @@ const dbUrl = "http://localhost:3000/"
                     // handle error
                     self.snackbar = true
                     self.snackbarColor = false
-                    self.message = error.response.data
-                    alert(error.response.data);
+                    self.message = "Kullanıcı adı veya şifre hatalı"
+                    console.log(error);
                 })
                 .then(function () {
                     // always executed
@@ -182,14 +182,12 @@ const dbUrl = "http://localhost:3000/"
                     password:this.password
                 })
                 .then(function (response) {
-                    if (response.data.accessToken != null){
-                        self.$cookies.get('accessToken')
-                        self.snackbar = true
-                        self.snackbarColor = true
-                        self.message = 'Başarılı!'
-                        window.location.reload()
-                    }
-                    
+                    console.log(response)
+                    self.$cookies.get('accessToken')
+                    self.snackbar = true
+                    self.snackbarColor = true
+                    self.message = 'Başarılı!'
+                    window.location.reload()
                 })
                 .catch(function (error) {
                     // handle error

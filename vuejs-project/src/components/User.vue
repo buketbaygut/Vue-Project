@@ -165,9 +165,10 @@
         >
           <v-text-field
             outlined
-            dense v-model="ankaraGuestCount"
-            :rules="[() => !!ankaraGuestCount || 'This field is required']"
+            dense v-model="ankaraCount"
+            :rules="[() => !!ankaraCount || 'This field is required']"
             label="Ankara Misafir Sayısı"
+            type="number"
             required
           ></v-text-field>
         </v-col>
@@ -183,9 +184,10 @@
         >
           <v-text-field
             outlined
-            dense v-model="diyarbakirGuestCount"
-            :rules="[() => !!diyarbakirGuestCount || 'This field is required']"
+            dense v-model="diyarbakirCount"
+            :rules="[() => !!diyarbakirCount || 'This field is required']"
             label="Diyarbakır Misafir Sayısı"
+            type="number"
             required
           ></v-text-field>
         </v-col>
@@ -234,8 +236,8 @@ import cityJson from '../json/city_list.json'
       message:'',
       timeout: 2000,
       snackbarColor:'',
-      diyarbakirGuestCount:'',
-      ankaraGuestCount:'',
+      diyarbakirCount:null,
+      ankaraCount:null,
       headers: [
           {
             text: 'Name',
@@ -247,8 +249,8 @@ import cityJson from '../json/city_list.json'
           { text: 'City', align: 'center',value: 'city' },
           { text: 'Relation', align: 'center',value: 'relation' },
           { text: 'From Who', align: 'center',value: 'fromWho' },
-          { text: 'Ankara Misafir Sayısı', align: 'center',value: 'ankaraGuestCount' },
-          { text: 'Diyarbakır Misafir Sayısı', align: 'center',value: 'diyarbakirGuestCount' },
+          { text: 'Ankara Misafir Sayısı', align: 'center',value: 'ankaraCount' },
+          { text: 'Diyarbakır Misafir Sayısı', align: 'center',value: 'diyarbakirCount' },
         ],
         guestList: [
         ],
@@ -275,8 +277,8 @@ import cityJson from '../json/city_list.json'
                 city: self.cities.find(a=>a.id === response.data[i].City).name,
                 relation: response.data[i].Relation,
                 fromWho: response.data[i].FromWho,
-                ankaraGuestCount: response.data[i].AnkaraGuestCount,
-                diyarbakirGuestCount: response.data[i].DiyarbakirGuestCount,
+                ankaraCount: response.data[i].AnkaraGuestCount,
+                diyarbakirCount: response.data[i].DiyarbakirGuestCount,
               });      
             }
       })                
@@ -304,8 +306,8 @@ import cityJson from '../json/city_list.json'
             fromWho:this.fromWho,
             city:this.guestCity,
             relation:this.relation,
-            ankaraGuestCount:this.ankaraGuestCount,
-            diyarbakirGuestCount: this.diyarbakirGuestCount
+            ankaraGuestCount:this.ankaraCount,
+            diyarbakirGuestCount: this.diyarbakirCount
           }
 
           var config = {
