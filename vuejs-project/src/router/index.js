@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 //import Home from '../views/Home.vue'
-import User from '../components/User.vue'
+import WeddingSystem from '../components/WeddingSystem.vue'
 import LoginPage from '../components/LoginPage.vue'
 
 Vue.use(VueRouter)
@@ -13,9 +13,9 @@ const routes = [
     component: LoginPage
   },
   {
-    path: '/profile',
-    name: 'Profile',
-    component: User
+    path: '/weddingSystem',
+    name: 'WeddingSystem',
+    component: WeddingSystem
   }
 ]
 

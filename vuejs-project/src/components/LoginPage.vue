@@ -113,8 +113,8 @@ const dbUrl = "http://localhost:3000/"
         name:'',  
         surname:'',  
         email:'',
-        password: 'Password',
-        passwordCheck : 'Password',
+        password: '',
+        passwordCheck : '',
         signIn:"Login",
         register:"Register",
         isLoggin:true,
@@ -153,7 +153,7 @@ const dbUrl = "http://localhost:3000/"
                         self.snackbar = true
                         self.snackbarColor = true
                         self.message = 'Başarılı!'
-                        router.push('/profile')
+                        router.push('/weddingSystem')
                     }
                 })
                 .catch(function (error) {

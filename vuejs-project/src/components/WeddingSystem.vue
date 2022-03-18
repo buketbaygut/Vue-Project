@@ -5,7 +5,7 @@
       color="primary"
       dark
     >
-      <v-toolbar-title class="flex text-center">User Profile</v-toolbar-title>      
+      <v-toolbar-title class="flex text-center">Wedding System</v-toolbar-title>      
       <button @click="signOut()" >Sign Out</button>
     </v-toolbar>
     <v-tabs vertical>
@@ -23,30 +23,61 @@
       </v-tab>
 
       <v-tab-item>
+        <v-container>
+        <v-row class="card-row-class" >
+          <v-col
+            cols="6"
+          >
+            <v-card class="mx-lg-auto" max-width="350">
+              <v-card-text class="firstCard-background-color">
+                <p class="text-h5 text--primary">
+                  Total Ankara Guest Count
+                </p>
+                <p class="text-h4 text--primary">
+                  {{totalAnkaraCount}}
+                </p>
+               </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col
+            cols="6"
+          >
+            <v-card class="mx-lg-auto" max-width="350">
+              <v-card-text class="secondCard-background-color">
+                <p class="text-h5 text--primary">
+                  Total Diyarbakır Guest Count
+                </p>
+                <p class="text-h4 text--primary">
+                  {{totalDiyarbakirCount}}
+                </p>
+               </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
         <v-card flat>
           <v-card-text>
             <v-simple-table>
-    <template v-slot:default>
-      <v-card>
-    <v-card-title>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
-    </v-card-title>
-    <v-data-table
-      :headers="headers"
-      :items="guestList"
-      :search="search"
-    ></v-data-table>
-  </v-card>
-    </template>
-  </v-simple-table>
-          </v-card-text>
-          
+              <template v-slot:default>
+                <v-card>
+                  <v-card-title>
+                    <v-text-field
+                      v-model="search"
+                      append-icon="mdi-magnify"
+                      label="Search"
+                      single-line
+                      hide-details
+                    ></v-text-field>
+                  </v-card-title>
+                  <v-data-table
+                    :headers="headers"
+                    :items="guestList"
+                    :search="search"
+                  ></v-data-table>
+                </v-card>
+              </template>
+            </v-simple-table>
+          </v-card-text>          
         </v-card>
       </v-tab-item>
       <v-tab-item>
@@ -158,7 +189,7 @@
         <v-col
           cols="4"
         >
-          <v-subheader style="justify-content: right;">Ankara'ya Gelecek Misafir Sayısı :</v-subheader>
+          <v-subheader style="justify-content: right;">Guest Count Come to Ankara :</v-subheader>
         </v-col>
         <v-col
           cols="4"
@@ -167,7 +198,7 @@
             outlined
             dense v-model="ankaraCount"
             :rules="[() => !!ankaraCount || 'This field is required']"
-            label="Ankara Misafir Sayısı"
+            label="Ankara Guest Count"
             type="number"
             required
           ></v-text-field>
@@ -177,7 +208,7 @@
         <v-col
           cols="4"
         >
-          <v-subheader style="justify-content: right;">Diyarbakır'a Gelecek Misafir Sayısı :</v-subheader>
+          <v-subheader style="justify-content: right;">Guest Count Come to Diyarbakır :</v-subheader>
         </v-col>
         <v-col
           cols="4"
@@ -186,7 +217,7 @@
             outlined
             dense v-model="diyarbakirCount"
             :rules="[() => !!diyarbakirCount || 'This field is required']"
-            label="Diyarbakır Misafir Sayısı"
+            label="Diyarbakır Guest Count"
             type="number"
             required
           ></v-text-field>
@@ -216,6 +247,17 @@
   </v-card>
   
 </template>
+<style>
+.card-row-class{
+  margin-left: 160px;
+}
+.firstCard-background-color{
+  background-color: #66f5db;
+}
+.secondCard-background-color{
+  background-color: rgba(126, 111, 255, 0.493);
+}
+</style>
 
 <script>
 const axios = require('axios').default;
@@ -231,13 +273,13 @@ import cityJson from '../json/city_list.json'
       fromWho:'',
       relation:'',
       fromWhoList : ['Buket','Umut','Both'],
-      relationList : ['Family','Friends','Relative'],
+      relationList : ['Family','Friends','Relative','Family-Friends0'],
       snackbar: false,
       message:'',
       timeout: 2000,
       snackbarColor:'',
-      diyarbakirCount:null,
-      ankaraCount:null,
+      diyarbakirCount:0,
+      ankaraCount:0,
       headers: [
           {
             text: 'Name',
@@ -249,11 +291,13 @@ import cityJson from '../json/city_list.json'
           { text: 'City', align: 'center',value: 'city' },
           { text: 'Relation', align: 'center',value: 'relation' },
           { text: 'From Who', align: 'center',value: 'fromWho' },
-          { text: 'Ankara Misafir Sayısı', align: 'center',value: 'ankaraCount' },
-          { text: 'Diyarbakır Misafir Sayısı', align: 'center',value: 'diyarbakirCount' },
+          { text: 'Ankara Guest Count', align: 'center',value: 'ankaraCount' },
+          { text: 'Diyarbakır Guest Count', align: 'center',value: 'diyarbakirCount' },
         ],
         guestList: [
         ],
+        totalAnkaraCount:0,
+        totalDiyarbakirCount:0,
     }), 
 
     mounted: function(){
@@ -277,9 +321,11 @@ import cityJson from '../json/city_list.json'
                 city: self.cities.find(a=>a.id === response.data[i].City).name,
                 relation: response.data[i].Relation,
                 fromWho: response.data[i].FromWho,
-                ankaraCount: response.data[i].AnkaraGuestCount,
-                diyarbakirCount: response.data[i].DiyarbakirGuestCount,
-              });      
+                ankaraCount: parseInt(response.data[i].AnkaraGuestCount),
+                diyarbakirCount: parseInt(response.data[i].DiyarbakirGuestCount),                
+              });     
+              self.totalAnkaraCount += parseInt(response.data[i].AnkaraGuestCount)
+              self.totalDiyarbakirCount += parseInt(response.data[i].DiyarbakirGuestCount) 
             }
       })                
       .catch(function (error) {
@@ -339,7 +385,7 @@ import cityJson from '../json/city_list.json'
 
       signOut(){
         this.$cookies.remove('accessToken')
-        this.$router.go("/profile")
+        this.$router.go(-1)
       }
     })
 
