@@ -387,7 +387,7 @@ import cityJson from '../json/city_list.json'
                     self.snackbar = true
                     self.snackbarColor = true
                     self.message = 'Başarılı!'
-                    router.push('/weddingSystem')
+                    router.push('/')
                 })
                 .catch(function (error) {
                     // handle error
