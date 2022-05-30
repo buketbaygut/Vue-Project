@@ -347,8 +347,6 @@ import cityJson from '../json/city_list.json'
     methods: ({
 
       addGuest(){
-                var router = this.$router; 
-
         
         if (this.guestName === "" || this.guestSurname === "" || this.fromWho === "" || this.guestCity === "" || this.relation === "") {
           this.snackbar = true
