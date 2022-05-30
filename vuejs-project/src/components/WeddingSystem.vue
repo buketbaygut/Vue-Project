@@ -60,6 +60,11 @@
             <v-simple-table>
               <template v-slot:default>
                 <v-card>
+
+      <export-excel
+    :data   = guestList>
+    <v-btn color="warning"> Download Guest List </v-btn>
+</export-excel>
                   <v-card-title>
                     <v-text-field
                       v-model="search"
@@ -197,10 +202,8 @@
           <v-text-field
             outlined
             dense v-model="ankaraCount"
-            :rules="[() => !!ankaraCount || 'This field is required']"
             label="Ankara Guest Count"
             type="number"
-            required
           ></v-text-field>
         </v-col>
       </v-row>
@@ -216,10 +219,8 @@
           <v-text-field
             outlined
             dense v-model="diyarbakirCount"
-            :rules="[() => !!diyarbakirCount || 'This field is required']"
             label="Diyarbakır Guest Count"
             type="number"
-            required
           ></v-text-field>
         </v-col>
       </v-row>
@@ -261,6 +262,10 @@
 
 <script>
 const axios = require('axios').default;
+let dbUrl = "https://wedding.baygut.com:3000/"
+if( process.env.NODE_ENV !== "productıon" ){
+    dbUrl ="http://localhost:3000/"
+}
 
 import cityJson from '../json/city_list.json'
   export default {
@@ -273,7 +278,7 @@ import cityJson from '../json/city_list.json'
       fromWho:'',
       relation:'',
       fromWhoList : ['Buket','Umut','Both'],
-      relationList : ['Family','Friends','Relative','Family-Friends0'],
+      relationList : ['Family','Friends','Relative','Family-Friends'],
       snackbar: false,
       message:'',
       timeout: 2000,
@@ -294,10 +299,12 @@ import cityJson from '../json/city_list.json'
           { text: 'Ankara Guest Count', align: 'center',value: 'ankaraCount' },
           { text: 'Diyarbakır Guest Count', align: 'center',value: 'diyarbakirCount' },
         ],
-        guestList: [
-        ],
-        totalAnkaraCount:0,
-        totalDiyarbakirCount:0,
+      guestList: [],
+      filename: '',
+      autoWidth: true,
+      bookType: 'xlsx',
+      totalAnkaraCount:0,
+      totalDiyarbakirCount:0,
     }), 
 
     mounted: function(){
@@ -312,7 +319,7 @@ import cityJson from '../json/city_list.json'
         }
       };
       
-      axios.get('http://localhost:3000/guests', {headers:config.headers})
+      axios.get(dbUrl+'guests', {headers:config.headers})
       .then(function (response) {
             for (var i=0; i<response.data.length; i++) {
               self.guestList.push({
@@ -355,10 +362,19 @@ import cityJson from '../json/city_list.json'
             ankaraGuestCount:this.ankaraCount,
             diyarbakirGuestCount: this.diyarbakirCount
           }
+          console.log(data.diyarbakirGuestCount)
+          console.log(typeof(data.diyarbakirGuestCount))
+          alert("tettststwetef")
+          if (data.diyarbakirGuestCount === 0) {
+            data.diyarbakirGuestCount = "0"
+          }
+          if (data.ankaraGuestCount === 0) {
+            data.ankaraGuestCount ="0"
+          }
 
           var config = {
             method: 'post',
-            url: 'http://localhost:3000/guests',
+            url: dbUrl+'guests',
             headers: { 
               'Content-Type': 'text/xml;charset=UTF-8', 
               'accessToken': this.$cookies.get('accessToken'),

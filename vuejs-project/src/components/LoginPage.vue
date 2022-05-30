@@ -107,7 +107,12 @@
 </template>
 <script>
 const axios = require('axios').default;
-const dbUrl = "http://localhost:3000/"
+
+let dbUrl = "https://wedding.baygut.com:3000/"
+if( process.env.NODE_ENV !== "productıon" ){
+    dbUrl ="http://localhost:3000/"
+}
+
   export default {
     data: () => ({   
         name:'',  

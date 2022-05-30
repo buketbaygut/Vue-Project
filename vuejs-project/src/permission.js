@@ -5,9 +5,9 @@ router.beforeEach((to,from,next)=>{
     console.log(to)
     if (to.path === "/") {
         if(getTokenCookies()){
-            next("/profile")
+            next("/weddingSystem")
         }
-    }else if(to.path === "/profile"){
+    }else if(to.path === "/weddingSystem"){
         if(!getTokenCookies()){
             next("/")
         }
