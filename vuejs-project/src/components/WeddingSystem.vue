@@ -347,6 +347,8 @@ import cityJson from '../json/city_list.json'
     methods: ({
 
       addGuest(){
+                var router = this.$router; 
+
         
         if (this.guestName === "" || this.guestSurname === "" || this.fromWho === "" || this.guestCity === "" || this.relation === "") {
           this.snackbar = true
@@ -362,9 +364,7 @@ import cityJson from '../json/city_list.json'
             ankaraGuestCount:this.ankaraCount,
             diyarbakirGuestCount: this.diyarbakirCount
           }
-          console.log(data.diyarbakirGuestCount)
-          console.log(typeof(data.diyarbakirGuestCount))
-          alert("tettststwetef")
+          
           if (data.diyarbakirGuestCount === 0) {
             data.diyarbakirGuestCount = "0"
           }
@@ -387,7 +387,7 @@ import cityJson from '../json/city_list.json'
                     self.snackbar = true
                     self.snackbarColor = true
                     self.message = 'Başarılı!'
-                    window.location.reload()
+                    router.push('/weddingSystem')
                 })
                 .catch(function (error) {
                     // handle error
