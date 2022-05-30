@@ -387,7 +387,8 @@ import cityJson from '../json/city_list.json'
                     self.snackbar = true
                     self.snackbarColor = true
                     self.message = 'Başarılı!'
-                    router.push('/')
+                    //router.push('/')
+                    window.location.replace(window.location.origin)
                 })
                 .catch(function (error) {
                     // handle error
