@@ -108,7 +108,7 @@
 <script>
 const axios = require('axios').default;
 
-let dbUrl = "http://wedding.baygut.com:3000/"
+let dbUrl = "https://wedding.baygut.com/backend/"
 if( process.env.NODE_ENV !== "production" ){
     dbUrl ="http://localhost:3000/"
 }
